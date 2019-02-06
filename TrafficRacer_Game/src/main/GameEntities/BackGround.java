@@ -18,7 +18,7 @@ import main.Game;
 public class BackGround extends GameObject {
     
     Handler handler;
-
+    Game game;
     Random r;
     
     //Variabili per cambiare sfondo
@@ -28,9 +28,10 @@ public class BackGround extends GameObject {
     int previousImage;
     int y1;
 
-    public BackGround(int x, int y, ID id, Handler handler) {
+    public BackGround(int x, int y, ID id, Handler handler,Game g) {
         super(x, y, id);
         this.handler = handler;
+        this.game = g;
         r = new Random();
 
         //Caricamento immagini
@@ -58,7 +59,7 @@ public class BackGround extends GameObject {
 
     @Override
     public void tick() {
-        y += velY;
+        y += velY + game.getVelB();
     }
 
     @Override
@@ -72,8 +73,8 @@ public class BackGround extends GameObject {
 
         y1 = y - Game.HEIGHT;
 
-        g.drawImage(imgs[previousImage], 0, y, Game.WIDTH, Game.HEIGHT, null);
-        g.drawImage(imgs[selectedImage], 0, y1, Game.WIDTH, Game.HEIGHT, null);
+        g.drawImage(imgs[previousImage], 0, game.r.ry(y), game.r.rx(Game.WIDTH), game.r.ry(Game.HEIGHT), null);
+        g.drawImage(imgs[selectedImage], 0, game.r.ry(y1), game.r.rx(Game.WIDTH), game.r.ry(Game.HEIGHT), null);
 
     }
 

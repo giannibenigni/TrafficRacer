@@ -18,10 +18,13 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private boolean running = false;
     
-    private Random r;
+    private Random ra;
     private Handler handler;
     private HUD hud;
+    public Resaize r;
     
+    private int VelB = 0;
+    private int point = 0;
     
     CarSpawner carSpawner;
     public ImagesLoader loader;
@@ -30,25 +33,23 @@ public class Game extends Canvas implements Runnable{
     long tick = 0;
     
     public Game(){
-        r = new Random();
+        ra = new Random();
         loader = new ImagesLoader();
+        r = new Resaize(1000, WIDTH, HEIGHT);
         handler = new Handler(); 
         
         carSpawner= new CarSpawner(handler,this);
         
         this.addKeyListener(new KeyInput(handler));
         
-        hud = new HUD();
+        hud = new HUD(handler,this);
         
         new Window(WIDTH, HEIGHT, "Gioco", this);
         
         //Entita del gioco
-        handler.addObject(new BackGround(0, 0, ID.BackGround, handler));
+        handler.addObject(new BackGround(0, 0, ID.BackGround, handler,this));
         //handler.addObject(new EnemyCar(0,0,ID.EnemyCar, handler));
-        handler.addObject(new PlayerCar((WIDTH/2)-32, HEIGHT-180, ID.PlayerCar, handler));
-        
-       
-        
+        handler.addObject(new PlayerCar((WIDTH/2)-32, HEIGHT-180, ID.PlayerCar, handler,this));   
         
     }
     
@@ -109,6 +110,11 @@ public class Game extends Canvas implements Runnable{
     private void tick(){
         tick++;
 
+        if(tick%100 == 0){
+            System.out.println("Vel+");
+            VelB++;
+        }
+        
         carSpawner.spawn(tick);
         handler.tick();
         hud.tick();
@@ -126,7 +132,7 @@ public class Game extends Canvas implements Runnable{
         Graphics g = bs.getDrawGraphics();
         
         g.setColor(Color.black);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.fillRect(0, 0, r.rx(WIDTH), r.ry(HEIGHT));
         
         handler.render(g);
         hud.render(g);
@@ -153,6 +159,22 @@ public class Game extends Canvas implements Runnable{
         
         new Game();
         
+    }
+    
+    public int getVelB(){
+        return VelB;
+    }
+    
+    public int getPoint(){
+        return point;
+    }
+    
+    public void addPoint(int point){
+        this.point += point;
+    }
+    
+    public Resaize R(){
+        return r;
     }
     
 }

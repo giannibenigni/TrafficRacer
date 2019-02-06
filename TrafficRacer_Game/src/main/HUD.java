@@ -8,16 +8,22 @@ import static java.awt.font.TextAttribute.FONT;
 
 public class HUD {
     
-    public static long Punteggio = 0;
+    Handler handler;
+    Game game;
+    
+    public HUD(Handler handler, Game g){
+        this.handler = handler;
+        this.game = g;
+    }
     
     public void tick(){
-        Punteggio++;
+        
     }
     
     public void render(Graphics g){
         
         g.setColor(Color.white);
         g.setFont(new Font("Serif", Font.BOLD,30));
-        g.drawString("Score: " + String.valueOf(Punteggio),20,50);
+        g.drawString("Score: " + String.valueOf(game.getPoint()),game.r.rx(20),game.r.ry(50));
     }
 }

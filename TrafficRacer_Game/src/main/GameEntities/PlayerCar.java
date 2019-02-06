@@ -20,13 +20,15 @@ public class PlayerCar extends GameObject {
     
     Random r = new Random();
     Handler handler;
+    Game game;
     
     URL url;
     Image img;
     
-    public PlayerCar(int x, int y, ID id, Handler handler) {
+    public PlayerCar(int x, int y, ID id, Handler handler,Game game) {
         super(x, y, id);
         this.handler = handler;
+        this.game = game;
         
         url = getClass().getResource("/Images/playerCar.png");
         try {
@@ -44,13 +46,15 @@ public class PlayerCar extends GameObject {
         x = Game.clamp(x, 100, Game.WIDTH - 164);
         //y = Game.clamp(y, 0, Game.HEIGHT - 60);
         
+        game.addPoint(((x > (Game.WIDTH/2)) ? 1:2) + game.getVelB());
+        
         collision();
     }
     
     @Override
     public void render(Graphics g) {        
-        g.drawImage(img, x, y, 64, 64, null);
-        g.drawRect(x, y, 64, 64);
+        g.drawImage(img, game.r.rx(x), game.r.ry(y), game.r.rx(64), game.r.ry(64), null);
+        g.drawRect(game.r.rx(x), game.r.ry(y), game.r.rx(64), game.r.ry(64));
         
     }
     
@@ -68,7 +72,7 @@ public class PlayerCar extends GameObject {
                   Rectangle eC = gameObject.getBounds();
                   
                 if (pC.intersects(eC)) {
-                    
+                    System.out.println("Collisione!");
                 }
             }
         }

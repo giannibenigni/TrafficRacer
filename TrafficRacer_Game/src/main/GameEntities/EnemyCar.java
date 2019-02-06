@@ -29,13 +29,11 @@ public class EnemyCar extends GameObject{
         super(x, y, id); 
         this.handler = handler;
         this.game = game;
-        
-        velY = 5;
     }
 
     @Override
     public void tick() {
-        y += velY;
+        y += velY + ((velY > 0) ? game.getVelB():-game.getVelB());
         
         if(y >  Game.HEIGHT+20){
             handler.removeObject(this);
@@ -44,7 +42,7 @@ public class EnemyCar extends GameObject{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(game.loader.getImage(index),x , y, 64, 64, null);
+        g.drawImage(game.loader.getImage(index),game.r.rx(x), game.r.ry(y), game.r.rx(64), game.r.ry(64), null);
     }
 
     @Override

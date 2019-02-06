@@ -40,7 +40,7 @@ public class Handler {
     }
     
     public void removeObject(GameObject go){
-                object.remove(go);
+        object.remove(go);
     }
     
 }
