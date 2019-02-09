@@ -8,12 +8,14 @@ import java.util.logging.Logger;
 public class KeyInput extends KeyAdapter {
 
     private Handler handler;
+    private Game game;
 
     private boolean dx = false;
     private boolean sx = false;
 
-    public KeyInput(Handler handler) {
+    public KeyInput(Handler handler, Game game) {
         this.handler = handler;
+        this.game = game;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class KeyInput extends KeyAdapter {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_ESCAPE) {
-            
+            //game.running = false;
         }
 
         for (int i = 0; i < handler.object.size(); i++) {

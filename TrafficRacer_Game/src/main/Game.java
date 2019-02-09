@@ -16,7 +16,7 @@ public class Game extends Canvas implements Runnable{
     public static final int HEIGHT = WIDTH / 8 * 9;
     
     private Thread thread;
-    private boolean running = false;
+    public boolean running = false;
     
     private Random ra;
     private Handler handler;
@@ -40,7 +40,7 @@ public class Game extends Canvas implements Runnable{
         
         carSpawner= new CarSpawner(handler,this);
         
-        this.addKeyListener(new KeyInput(handler));
+        this.addKeyListener(new KeyInput(handler,this));
         
         hud = new HUD(handler,this);
         
@@ -110,7 +110,7 @@ public class Game extends Canvas implements Runnable{
     private void tick(){
         tick++;
 
-        if(tick%100 == 0){
+        if(tick % 500 == 0 && VelB < 18){
             System.out.println("Vel+");
             VelB++;
         }

@@ -66,13 +66,14 @@ public class PlayerCar extends GameObject {
     private void collision() {
         
         for (GameObject gameObject : handler.object) {
-              if (gameObject.getId() == ID.EnemyCar) {
+              if (gameObject.getId() == ID.EnemyCar || gameObject.getId() == ID.EnemyTruck || gameObject.getId() == ID.Obstacle) {
                   
                   Rectangle pC = getBounds();
                   Rectangle eC = gameObject.getBounds();
                   
                 if (pC.intersects(eC)) {
                     System.out.println("Collisione!");
+                    //game.running = false;
                 }
             }
         }

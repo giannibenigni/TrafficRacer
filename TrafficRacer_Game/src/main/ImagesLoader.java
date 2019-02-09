@@ -12,37 +12,63 @@ import main.GameEntities.PlayerCar;
 public class ImagesLoader {
 
     private URL url;
-    private Image img[];
+    private Image carImg[];
+    private Image truckImg[];
+    private Image obstaclesImg[];
     
     public ImagesLoader() {
         
-            img = new Image[6];
+            carImg = new Image[6];
+            truckImg = new Image[2];
+            obstaclesImg = new Image[1];
         
         try {
             url = getClass().getResource("/Images/Enemy1.png");
-            img[0] = ImageIO.read(url);
+            carImg[0] = ImageIO.read(url);
             url = getClass().getResource("/Images/Enemy2.png");
-            img[1] = ImageIO.read(url);
+            carImg[1] = ImageIO.read(url);
             url = getClass().getResource("/Images/Enemy3.png");
-            img[2] = ImageIO.read(url);
+            carImg[2] = ImageIO.read(url);
             url = getClass().getResource("/Images/Enemy11.png");
-            img[3] = ImageIO.read(url);
+            carImg[3] = ImageIO.read(url);
             url = getClass().getResource("/Images/Enemy22.png");
-            img[4] = ImageIO.read(url);
+            carImg[4] = ImageIO.read(url);
             url = getClass().getResource("/Images/Enemy33.png");
-            img[5] = ImageIO.read(url);
+            carImg[5] = ImageIO.read(url);
+            url = getClass().getResource("/Images/Enemy4.png");
+            truckImg[0] = ImageIO.read(url);
+            url = getClass().getResource("/Images/Enemy44.png");
+            truckImg[1] = ImageIO.read(url);
+            url = getClass().getResource("/Images/Obstacle1.png");
+            obstaclesImg[0] = ImageIO.read(url);
         } catch (IOException ex) {
             Logger.getLogger(PlayerCar.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
     
-    public Image getImage(int i){
-        if(i<0||i>=img.length){
+    public Image getCarImage(int i){
+        if(i<0||i>=carImg.length){
             System.out.println("main.ImagesLoader.getImage()");
             return null;
         }
-        return img[i];
+        return carImg[i];
+    }
+    
+    public Image getTruckImage(int i){
+        if(i<0||i>truckImg.length){
+            return null;
+        }
+        
+        return truckImg[i];
+    }
+    
+    public Image getObstaclesImage(int i){
+        if(i<0||i>obstaclesImg.length){
+            return null;
+        }
+        
+        return obstaclesImg[i];
     }
     
     
