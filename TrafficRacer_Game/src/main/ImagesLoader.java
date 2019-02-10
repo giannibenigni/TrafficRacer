@@ -8,20 +8,18 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import main.GameEntities.PlayerCar;
 
-
 public class ImagesLoader {
 
-    private URL url;
     private Image carImg[];
     private Image truckImg[];
     private Image obstaclesImg[];
-    
+
     public ImagesLoader() {
-        
-            carImg = new Image[6];
-            truckImg = new Image[2];
-            obstaclesImg = new Image[1];
-        
+        URL url;
+        carImg = new Image[6];
+        truckImg = new Image[2];
+        obstaclesImg = new Image[1];
+
         try {
             url = getClass().getResource("/Images/Enemy1.png");
             carImg[0] = ImageIO.read(url);
@@ -44,33 +42,31 @@ public class ImagesLoader {
         } catch (IOException ex) {
             Logger.getLogger(PlayerCar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
-    public Image getCarImage(int i){
-        if(i<0||i>=carImg.length){
+
+    public Image getCarImage(int i) {
+        if (i < 0 || i >= carImg.length) {
             System.out.println("main.ImagesLoader.getImage()");
             return null;
         }
         return carImg[i];
     }
-    
-    public Image getTruckImage(int i){
-        if(i<0||i>truckImg.length){
+
+    public Image getTruckImage(int i) {
+        if (i < 0 || i > truckImg.length) {
             return null;
         }
-        
+
         return truckImg[i];
     }
-    
-    public Image getObstaclesImage(int i){
-        if(i<0||i>obstaclesImg.length){
+
+    public Image getObstaclesImage(int i) {
+        if (i < 0 || i > obstaclesImg.length) {
             return null;
         }
-        
+
         return obstaclesImg[i];
     }
-    
-    
-    
+
 }

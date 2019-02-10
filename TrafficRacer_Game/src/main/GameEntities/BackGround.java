@@ -17,16 +17,15 @@ import main.Game;
 
 public class BackGround extends GameObject {
     
-    Handler handler;
-    Game game;
-    Random r;
+    private final Handler handler;
+    private final  Game game;
+    private final Random r;
     
     //Variabili per cambiare sfondo
-    Image imgs[];
-    File file;
-    int selectedImage;
-    int previousImage;
-    int y1;
+    private Image imgs[];
+    private int selectedImage;
+    private int previousImage;
+    private int y1;
 
     public BackGround(int x, int y, ID id, Handler handler,Game g) {
         super(x, y, id);

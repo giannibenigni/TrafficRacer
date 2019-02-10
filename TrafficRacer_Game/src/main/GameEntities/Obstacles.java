@@ -19,11 +19,10 @@ import main.ID;
  */
 public class Obstacles extends GameObject{
 
-    Handler handler;
-    Game game;
+    private final Handler handler;
+    private final Game game;
     
     private int index = 0;
-    Random r;
     
     public Obstacles(int x, int y, ID id,Handler handler, Game game) {
         super(x, y, id);
@@ -44,6 +43,7 @@ public class Obstacles extends GameObject{
     @Override
     public void render(Graphics g) {
         g.drawImage(game.loader.getObstaclesImage(index),game.r.rx(x), game.r.ry(y), game.r.rx(25), game.r.ry(70), null);
+        g.drawRect(game.r.rx(x), game.r.ry(y), game.r.rx(25), game.r.ry(70));
     }
 
     @Override

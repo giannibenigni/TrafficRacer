@@ -9,9 +9,6 @@ import java.util.logging.Logger;
 
 
 public class Handler {
-    
-
-    
     public LinkedList<GameObject> object = new LinkedList<GameObject>();
     
     public void tick(){

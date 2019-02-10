@@ -11,10 +11,10 @@ package main;
  */
 public class Resaize {
 
-    float RealX;
-    float RealY;
-    float LogicalX;
-    float LogicalY;
+    private final float RealX;
+    private final float RealY;
+    private final float LogicalX;
+    private final float LogicalY;
 
     public Resaize(float RealX, float LogicalX, float LogicalY) {
         this.RealX = (int) RealX;

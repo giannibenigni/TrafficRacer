@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 
 public class KeyInput extends KeyAdapter {
 
-    private Handler handler;
-    private Game game;
+    private final Handler handler;
+    private final Game game;
 
     private boolean dx = false;
     private boolean sx = false;

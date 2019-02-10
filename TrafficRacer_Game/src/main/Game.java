@@ -1,4 +1,3 @@
-
 package main;
 
 import main.GameEntities.PlayerCar;
@@ -8,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
 import main.GameEntities.BackGround;
-import main.GameEntities.EnemyCar;
 
 public class Game extends Canvas implements Runnable{
     
@@ -18,17 +16,20 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     public boolean running = false;
     
-    private Random ra;
-    private Handler handler;
-    private HUD hud;
-    public Resaize r;
+    private final Random ra;
+    private final Handler handler;
+    
+    private final HUD hud;
+    public final Resaize r;
     
     private int VelB = 0;
     private int point = 0;
     
-    CarSpawner carSpawner;
-    public ImagesLoader loader;
+    private final CarSpawner carSpawner;
+    public final ImagesLoader loader;
     
+    
+    public final RenderPage pageRender;
     
     long tick = 0;
     
@@ -39,6 +40,8 @@ public class Game extends Canvas implements Runnable{
         handler = new Handler(); 
         
         carSpawner= new CarSpawner(handler,this);
+        
+        pageRender = new RenderPage(handler, this);
         
         this.addKeyListener(new KeyInput(handler,this));
         
@@ -66,8 +69,9 @@ public class Game extends Canvas implements Runnable{
     
     public synchronized void stop(){
         try {
-            thread.join();
             running = false;
+            renderPage(1);
+            thread.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,32 +79,38 @@ public class Game extends Canvas implements Runnable{
     
     @Override
     public void run(){
-        
-        
         this.requestFocus();
         
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
+        double amountOfFrame = 240;
         double ns = 1000000000 / amountOfTicks;
+        double rns = 1000000000 / amountOfFrame;
         double delta = 0;
+        double deltar = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
         
         while(running){
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
+            deltar += (now - lastTime) / rns;
             lastTime = now;
             while(delta >= 1){
                 tick();
                 delta--;
             }
-            if(running){
+            
+            
+            while(running&&deltar >= 1){
                 render();
                 frames++;
+                deltar--;
             }
-            if(System.currentTimeMillis() - timer > 1000){
-                timer += 1000;
-                System.out.println("FPS: " + frames);
+            
+            if(System.currentTimeMillis() - timer > 5000){
+                timer += 5000;
+                System.out.println("FPS: " + frames/5);
                 frames = 0;
             }
         }
@@ -142,6 +152,23 @@ public class Game extends Canvas implements Runnable{
         bs.show();
         
     }
+    
+    public void renderPage(int index){
+        BufferStrategy bs = this.getBufferStrategy();
+        if(bs == null){
+            this.createBufferStrategy(3);
+            return;
+        }
+        
+        Graphics g = bs.getDrawGraphics();
+        
+        pageRender.renderPageNumbr(index, g);
+        
+        g.dispose();
+        
+        bs.show();
+    }
+    
     
     public static int clamp(int var, int min, int max){
         if(var >= max){
