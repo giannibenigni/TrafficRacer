@@ -51,7 +51,9 @@ public class Game extends Canvas implements Runnable{
         
         //Entita del gioco
         handler.addObject(new BackGround(0, 0, ID.BackGround, handler,this));
-        //handler.addObject(new EnemyCar(0,0,ID.EnemyCar, handler));
+        
+        
+        
         handler.addObject(new PlayerCar((WIDTH/2)-32, HEIGHT-180, ID.PlayerCar, handler,this));   
         
     }
@@ -83,7 +85,7 @@ public class Game extends Canvas implements Runnable{
         
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
-        double amountOfFrame = 240;
+        double amountOfFrame = 60;
         double ns = 1000000000 / amountOfTicks;
         double rns = 1000000000 / amountOfFrame;
         double delta = 0;
