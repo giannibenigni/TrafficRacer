@@ -19,7 +19,7 @@ public class Game extends Canvas implements Runnable{
     private final Random ra;
     private final Handler handler;
     
-    private final HUD hud;
+    public final HUD hud;
     public final Resaize r;
     
     private int VelB = 0;
@@ -125,8 +125,8 @@ public class Game extends Canvas implements Runnable{
             VelB++;
         }
         
-        carSpawner.spawn(tick);
         handler.tick();
+        carSpawner.spawn(tick);
         hud.tick();
         
     }

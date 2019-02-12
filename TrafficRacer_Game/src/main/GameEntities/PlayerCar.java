@@ -73,9 +73,14 @@ public class PlayerCar extends GameObject {
                   
                 if (pC.intersects(eC)) {
                     System.out.println("Collisione!");
+                    velY = gameObject.getVelY();
+                    
+                    game.hud.setGameover();
+                    
+                    
                     //game.running = false;
                     
-                    game.stop();
+                   // game.stop();
                 }
             }
         }
