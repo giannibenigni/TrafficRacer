@@ -1,5 +1,2 @@
 # TrafficRacer
 
-
-cestarollo
-GGGGGGIANNI
