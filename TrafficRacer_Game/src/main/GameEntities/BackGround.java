@@ -37,11 +37,11 @@ public class BackGround extends GameObject {
         URL url;
         imgs = new Image[3];
         try {
-            url = getClass().getResource("/Images/Sfondo.jpg");
+            url = getClass().getResource("/Images/Sfondo1.jpg");
             imgs[0] = ImageIO.read(url);
-            url = getClass().getResource("/Images/Sfondo.jpg");
+            url = getClass().getResource("/Images/Sfondo2.jpg");
             imgs[1] = ImageIO.read(url);
-            url = getClass().getResource("/Images/Sfondo.jpg");
+            url = getClass().getResource("/Images/Sfondo3.jpg");
             imgs[2] = ImageIO.read(url);
 
         } catch (IOException ex) {
