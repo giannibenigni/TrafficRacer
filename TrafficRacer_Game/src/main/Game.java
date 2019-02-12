@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.GameEntities.BackGround;
 
 public class Game extends Canvas implements Runnable {
@@ -20,7 +22,7 @@ public class Game extends Canvas implements Runnable {
     private final Handler handler;
 
     public final HUD hud;
-    public final Resaize r;
+    public final Resize r;
 
     public int VelBase = 0;
     public int VelAcceleration = 0;
@@ -37,7 +39,7 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         ra = new Random();
         imageLoader = new ImagesLoader();
-        r = new Resaize(1000, WIDTH, HEIGHT);
+        r = new Resize(1000, WIDTH, HEIGHT);
         handler = new Handler();
 
         carSpawner = new CarSpawner(handler, this);
@@ -85,37 +87,75 @@ public class Game extends Canvas implements Runnable {
         this.requestFocus();
 
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0;
-        double amountOfFrame = 60;
+        double amountOfTicks = 200.0;
+//        double amountOfFrame = 60;
         double ns = 1000000000 / amountOfTicks;
-        double rns = 1000000000 / amountOfFrame;
+//        double rns = 1000000000 / amountOfFrame;
         double delta = 0;
-        double deltar = 0;
-        long timer = System.currentTimeMillis();
-        int frames = 0;
+//        double deltar = 0;
+//        long timer = System.currentTimeMillis();
+//        int frames = 0;
+
+//        while (running) {
+//            long now = System.nanoTime();
+//            delta += (now - lastTime) / ns;
+//            deltar += (now - lastTime) / rns;
+//            lastTime = now;
+//            while (delta >= 1) {
+//                tick();
+//                System.out.println("main.Game.run() TICK");
+//                delta--;
+//            }
+//
+//            while (running && deltar >= 1) {
+//                render();
+//                frames++;
+//                deltar--;
+//                System.out.println("main.Game.run() RENDER");
+//            }
+//
+//            System.out.println("main.Game.run() OUT");
+//
+//            if (System.currentTimeMillis() - timer > 5000) {
+//                timer += 5000;
+//                System.out.println("FPS: " + frames / 5);
+//                frames = 0;
+//            }
+//        }
+        double delay;
+        double avgMsCi = 0;
 
         while (running) {
             long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            deltar += (now - lastTime) / rns;
+            delta = now - lastTime;
             lastTime = now;
-            while (delta >= 1) {
-                tick();
-                delta--;
+
+            tick();
+            render();
+
+            //  System.out.println("ms/tick: " + ((double) (System.nanoTime() - lastTime) / 1000000) + "      ms/cicle: " + delta / 1000000);
+            avgMsCi += delta / 1000000;
+            if (tick % 30 == 0) {
+                System.out.println("avg ms/cicle: " + avgMsCi / 30);
+                avgMsCi = 0;
             }
 
-            while (running && deltar >= 1) {
-                render();
-                frames++;
-                deltar--;
-            }
+            delay = lastTime + ns - System.nanoTime();
+            if (delay > 0) {
+                try {
+                    int delayMs = 0;
+                    if (delay > 999999) {
+                        delayMs = (int) delay / 1000000;
+                        delay -= delayMs * 1000000;
+                    }
 
-            if (System.currentTimeMillis() - timer > 5000) {
-                timer += 5000;
-                System.out.println("FPS: " + frames / 5);
-                frames = 0;
+                    Thread.sleep(delayMs, (int) delay);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+
         stop();
     }
 
@@ -202,7 +242,7 @@ public class Game extends Canvas implements Runnable {
         this.point += point;
     }
 
-    public Resaize R() {
+    public Resize R() {
         return r;
     }
 

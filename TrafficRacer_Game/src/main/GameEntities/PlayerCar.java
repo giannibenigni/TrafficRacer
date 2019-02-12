@@ -3,8 +3,6 @@ package main.GameEntities;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
@@ -44,10 +42,9 @@ public class PlayerCar extends GameObject {
         x += velX;
         y += velY;
 
-        x = Game.clamp(x, 100, Game.WIDTH - 164);
-        //y = Game.clamp(y, 0, Game.HEIGHT - 60);
-
         if (!game.hud.isGameover()) {
+            x = Game.clamp(x, 100, Game.WIDTH - 164);
+            //y = Game.clamp(y, 0, Game.HEIGHT - 60);
             game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelBase());
             collision();
         } else {
@@ -66,7 +63,7 @@ public class PlayerCar extends GameObject {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getHitbox() {
         return new Rectangle(x + 10, y, 45, 64);
     }
 
@@ -74,11 +71,7 @@ public class PlayerCar extends GameObject {
 
         for (GameObject gameObject : handler.object) {
             if (gameObject.getId() == ID.EnemyCar || gameObject.getId() == ID.EnemyTruck || gameObject.getId() == ID.Obstacle) {
-
-                Rectangle pC = getBounds();
-                Rectangle eC = gameObject.getBounds();
-
-                if (pC.intersects(eC)) {
+                if (getHitbox().intersects(gameObject.getHitbox())) {
                     System.out.println("Collisione!");
                     velY = gameObject.getVelY();
 
@@ -90,17 +83,6 @@ public class PlayerCar extends GameObject {
             }
         }
 
-    }
-
-    @Override
-    public void setVelY(int velY) {
-        for (GameObject gameObject : handler.object) {
-            if (gameObject.getId() == ID.BackGround) {
-                gameObject.setVelY(-velY);
-            }
-        }
-
-        super.setVelY(0);
     }
 
 }

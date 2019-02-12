@@ -7,7 +7,6 @@ package main.GameEntities;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Random;
 import main.Game;
 import main.GameObject;
 import main.Handler;
@@ -47,7 +46,7 @@ public class Obstacles extends GameObject{
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getHitbox() {
         return new Rectangle(x,y,25,70);
     }
     

@@ -141,10 +141,10 @@ public class CarSpawner {
         return false;
     }
 
-    public boolean colide(Rectangle bounds) {
+    public boolean colide(Rectangle hitbox) {
         for (GameObject gameObject : handler.object) {
             if (gameObject.getId() == ID.EnemyCar || gameObject.getId() == ID.EnemyTruck || gameObject.getId() == ID.Obstacle) {
-                if (bounds.intersects(gameObject.getBounds())) {
+                if (hitbox.intersects(gameObject.getHitbox())) {
                     return true;
                 }
             }

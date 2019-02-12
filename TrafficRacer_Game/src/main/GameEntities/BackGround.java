@@ -3,7 +3,6 @@ package main.GameEntities;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
@@ -78,7 +77,7 @@ public class BackGround extends GameObject {
     }
 
     @Override
-    public Rectangle getBounds() {
+    public Rectangle getHitbox() {
         return null;
     }
 
