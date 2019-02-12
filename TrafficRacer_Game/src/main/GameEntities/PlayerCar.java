@@ -40,6 +40,7 @@ public class PlayerCar extends GameObject {
 
     @Override
     public void tick() {
+
         x += velX;
         y += velY;
 
@@ -49,7 +50,6 @@ public class PlayerCar extends GameObject {
         if (!game.hud.isGameover()) {
             game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelB());
         }
-
         collision();
     }
 

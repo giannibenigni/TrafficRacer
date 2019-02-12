@@ -22,7 +22,8 @@ public class Game extends Canvas implements Runnable{
     public final HUD hud;
     public final Resaize r;
     
-    private int VelB = 0;
+    public int VelB = 0;
+    public int VelAcc = 0;
     private int point = 0;
     
     private final CarSpawner carSpawner;
@@ -51,8 +52,7 @@ public class Game extends Canvas implements Runnable{
         
         //Entita del gioco
         handler.addObject(new BackGround(0, 0, ID.BackGround, handler,this));
-        
-        
+        //handler.addObject(new EnemyCar(0,0,ID.EnemyCar, handler));
         
         handler.addObject(new PlayerCar((WIDTH/2)-32, HEIGHT-180, ID.PlayerCar, handler,this));   
         
@@ -191,7 +191,7 @@ public class Game extends Canvas implements Runnable{
     }
     
     public int getVelB(){
-        return VelB;
+        return VelB + VelAcc;
     }
     
     public int getPoint(){
@@ -205,5 +205,7 @@ public class Game extends Canvas implements Runnable{
     public Resaize R(){
         return r;
     }
+    
+    
     
 }

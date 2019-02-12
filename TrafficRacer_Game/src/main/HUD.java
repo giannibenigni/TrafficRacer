@@ -27,8 +27,6 @@ public class HUD {
         g.setFont(new Font(Font.DIALOG, Font.BOLD, 30));
         g.drawString("Score: " + String.valueOf(game.getPoint()), game.r.rx(20), game.r.ry(50));
         
-        game.pageRender.renderStart(g);
-        
         if(gameover){
             game.pageRender.renderGameOver(g);
         }
