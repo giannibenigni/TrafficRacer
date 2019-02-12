@@ -33,7 +33,7 @@ public class Obstacles extends GameObject{
 
     @Override
     public void tick() {
-        y += velY + ((velY > 0) ? game.getVelB():-game.getVelB());
+        y += velY + ((velY > 0) ? game.getVelBase():-game.getVelBase());
         
         if(y >  Game.HEIGHT+20){
             handler.removeObject(this);
@@ -42,7 +42,7 @@ public class Obstacles extends GameObject{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(game.loader.getObstaclesImage(index),game.r.rx(x), game.r.ry(y), game.r.rx(25), game.r.ry(70), null);
+        g.drawImage(game.imageLoader.getObstaclesImage(index),game.r.rx(x), game.r.ry(y), game.r.rx(25), game.r.ry(70), null);
         g.drawRect(game.r.rx(x), game.r.ry(y), game.r.rx(25), game.r.ry(70));
     }
 

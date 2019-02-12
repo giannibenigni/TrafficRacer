@@ -29,7 +29,7 @@ public class EnemyCar extends GameObject{
 
     @Override
     public void tick() {
-        y += velY + ((velY > 0) ? game.getVelB():-game.getVelB());
+        y += velY + ((velY > 0) ? game.getVelBase():-game.getVelBase());
         
         if(y >  Game.HEIGHT+20){
             handler.removeObject(this);
@@ -38,7 +38,7 @@ public class EnemyCar extends GameObject{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(game.loader.getCarImage(index),game.r.rx(x), game.r.ry(y), game.r.rx(64), game.r.ry(64), null);
+        g.drawImage(game.imageLoader.getCarImage(index),game.r.rx(x), game.r.ry(y), game.r.rx(64), game.r.ry(64), null);
         g.drawRect(game.r.rx(x+10), game.r.ry(y), game.r.rx(45), game.r.ry(64));
     }
 

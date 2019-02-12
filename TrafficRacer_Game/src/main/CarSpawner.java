@@ -17,17 +17,17 @@ import main.GameEntities.Obstacles;
  */
 public class CarSpawner {
 
-    private static int POSITION_1 = 125;
-    private static int POSITION_2 = 219;
-    private static int POSITION_3 = 315;
-    private static int POSITION_4 = 420;
-    private static int POSITION_5 = 520;
-    private static int POSITION_6 = 620;
-    private static int POSITION_CENTER = 385;
+    private static final int POSITION_1 = 125;
+    private static final int POSITION_2 = 219;
+    private static final int POSITION_3 = 315;
+    private static final int POSITION_4 = 420;
+    private static final int POSITION_5 = 520;
+    private static final int POSITION_6 = 620;
+    private static final int POSITION_CENTER = 385;
 
-    private static int SPAWN_Y = -100;
+    private static final int SPAWN_Y = -100;
 
-    private Random ran;
+    private final Random ran;
 
     Handler handler;
     Game game;
@@ -38,29 +38,22 @@ public class CarSpawner {
         ran = new Random();
     }
 
-    public void spawn(long tick) {
-        if (tick % 30 == 0) {
+    public synchronized void spawn(long tick) {
+        if (tick % ((int)((1.0 / ((double)(game.VelBase + game.VelAcceleration + 8) )) * 240.0)) == 0) {
 
             for (int i = 0; i < 3 && !SpawnCar(); i++) { //provo per tre volte a spawnare una macchina finchè non ci riesco
             }
-            
+
             for (int i = 0; i < 3 && !SpawnTruck(); i++) { //provo per tre volte a spawnare un camion finchè non ci riesco
             }
         }
 
-        if (tick % 50 == 0) {
-
-            double rCar = Math.random() * 12;
-
-            //sistema per gestire la probabilità
-            if (rCar >= 0 && rCar < 4) {
+        if (tick % ((int)((1.0 / ((double)(game.VelBase + game.VelAcceleration + 8) )) * 1200)) == 0) {
                 Obstacles obstacle = new Obstacles(POSITION_CENTER, SPAWN_Y, ID.EnemyCar, handler, game);
                 obstacle.setVelY(8);
                 obstacle.setImage(0);
 
                 handler.addObject(obstacle);
-            }
-
         }
     }
 
@@ -123,7 +116,7 @@ public class CarSpawner {
     }
 
     public boolean trySpawnCar(int vel, int position) {
-        if (!colide(new Rectangle(position + 10, SPAWN_Y, 45, 45))) {
+        if (!colide(new Rectangle(position + 10, SPAWN_Y, 45, 55))) {
             EnemyCar enemyCar = new EnemyCar(position, SPAWN_Y, ID.EnemyCar, handler, game);
             enemyCar.setVelY(vel);
             enemyCar.setImage((position < POSITION_CENTER ? 3 : 0) + ran.nextInt(3));
@@ -136,7 +129,7 @@ public class CarSpawner {
     }
 
     public boolean trySpawnTruck(int vel, int position) {
-        if (!colide(new Rectangle(position + 1, SPAWN_Y, 60, 300))) {
+        if (!colide(new Rectangle(position + 1, SPAWN_Y, 60, 310))) {
             EnemyTruck enemyTruck = new EnemyTruck(position, -400, ID.EnemyTruck, handler, game);
             enemyTruck.setVelY(vel);
             enemyTruck.setImage((position < POSITION_CENTER ? 1 : 0));

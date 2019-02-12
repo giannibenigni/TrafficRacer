@@ -2,8 +2,6 @@ package main;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class KeyInput extends KeyAdapter {
 
@@ -18,7 +16,7 @@ public class KeyInput extends KeyAdapter {
 
     private int countAcc;
     private int countDec;
-    
+
     public KeyInput(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
@@ -29,63 +27,31 @@ public class KeyInput extends KeyAdapter {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_ESCAPE) {
-            //game.running = false;
+            //  game.running = false;
         }
 
-        for (int i = 0; i < handler.object.size(); i++) {
-            GameObject tempObject = handler.object.get(i);
+        //Destra D
+        if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+            dx = true;
+            handler.getAObject(ID.PlayerCar).setVelX(5);
+            return;
+        }
 
-            if (tempObject.getId() == ID.PlayerCar) {
-                //Eventi del player
+        //Sinistra A
+        if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+            sx = true;
+            handler.getAObject(ID.PlayerCar).setVelX(-5);
+            return;
+        }
 
-                //Destra D
-                if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-                    dx = true;
-
-                    tempObject.setVelX(5);
-                }
-                //Sinistra A
-                if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-                    sx = true;
-                    tempObject.setVelX(-5);
-                }
-
-                //su w
-                if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
-                    if (up) {
-                        if (countAcc <= 60) {
-                            System.out.print("acc: ");
-                            double acc = Math.log((countAcc / 10) + 1);
-                            System.out.println(acc);
-                            game.VelAcc = (int) ((double)game.VelAcc + acc);
-                            countAcc++;
-                        }
-
-                    } else {
-                        up = true;
-                        countAcc = 20;
-                    }
-
-                }
-                //giù s
-                if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
-                    dw = true;
-                    if (dw) {
-                        
-                        if (countAcc <= 60) {
-                            System.out.println("dec");
-                            game.VelAcc = (int) ((double)game.VelAcc - Math.log((countAcc / 10) + 1));
-                            countDec++;
-                        }
-
-                    } else {
-                        dw = true;
-                        countDec = 0;
-                    }
-                }
-
-                return;
-            }
+        //su w
+        if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
+            up = true;
+            return;
+        }
+        //giù s
+        if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
+            dw = true;
         }
     }
 
@@ -93,48 +59,72 @@ public class KeyInput extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
-        for (int i = 0; i < handler.object.size(); i++) {
-            GameObject tempObject = handler.object.get(i);
+        //Destra D
+        if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+            dx = false;
 
-            if (tempObject.getId() == ID.PlayerCar) {
-                //Eventi del player
-
-                //Destra D
-                if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-                    dx = false;
-                    tempObject.setVelX(0);
-                    if (sx) {
-                        tempObject.setVelX(-5);
-                    }
-                }
-                //Sinistra A
-                if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-                    sx = false;
-                    tempObject.setVelX(0);
-                    if (dx) {
-                        tempObject.setVelX(5);
-                    }
-                }
-
-                //su w
-                if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
-                    up = false;
-
-                    if (dw) {
-
-                    }
-                }
-
-                //giù s
-                if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
-                    dw = false;
-
-                    if (up) {
-
-                    }
-                }
-                return;
+            if (sx) {
+                handler.getAObject(ID.PlayerCar).setVelX(-5);
+            } else {
+                handler.getAObject(ID.PlayerCar).setVelX(0);
             }
+            return;
+        }
+        //Sinistra A
+        if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+            sx = false;
+
+            if (dx) {
+                handler.getAObject(ID.PlayerCar).setVelX(5);
+            } else {
+                handler.getAObject(ID.PlayerCar).setVelX(0);
+            }
+            return;
+        }
+
+        //su w
+        if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) {
+            up = false;
+            //   System.out.println("main.KeyInput.keyReleased() UP");
+            countAcc = 0;
+            return;
+        }
+
+        //giù s
+        if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) {
+            dw = false;
+            countDec = 0;
+        }
+    }
+
+    public void tick() {
+
+        if (up) {
+            if (countAcc <= 60) {
+
+                int acc = (int) ((double) game.VelAcceleration + Math.log((countAcc / 10) + 1));
+
+                if (acc < 5 && acc > -3) {
+                    game.VelAcceleration = acc;
+                    //System.out.println("acc: " + acc);
+                }
+
+                countAcc++;
+            }
+        }
+
+        if (dw) {
+
+            if (countDec <= 60) {
+                int acc = (int) ((double) game.VelAcceleration - Math.log((countAcc / 10) + 1));
+
+                if (acc < 5 && acc > -2) {
+                    game.VelAcceleration = acc;
+                    //System.out.println("dec: " + acc);
+                }
+                countDec++;
+            }
+
         }
     }
 }

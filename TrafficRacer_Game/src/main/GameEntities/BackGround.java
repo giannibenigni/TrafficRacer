@@ -58,7 +58,7 @@ public class BackGround extends GameObject {
 
     @Override
     public void tick() {
-        y += velY + game.getVelB();
+        y += velY + game.getVelBase();
     }
 
     @Override

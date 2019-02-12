@@ -48,9 +48,14 @@ public class PlayerCar extends GameObject {
         //y = Game.clamp(y, 0, Game.HEIGHT - 60);
 
         if (!game.hud.isGameover()) {
-            game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelB());
+            game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelBase());
+            collision();
+        } else {
+            if (y > Game.HEIGHT + 20) {
+                handler.removeObject(this);
+            }
         }
-        collision();
+
     }
 
     @Override

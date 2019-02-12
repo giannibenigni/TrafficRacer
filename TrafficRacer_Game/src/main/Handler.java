@@ -3,9 +3,6 @@ package main;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
-import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class Handler {
@@ -32,12 +29,17 @@ public class Handler {
         this.object.add(object);
     }
     
-    public void removeAllObject(){
-        this.object.remove(object);
-    }
-    
     public void removeObject(GameObject go){
         object.remove(go);
+    }
+    
+    public GameObject getAObject(ID id){
+        for (GameObject gameObject : object) {
+            if(gameObject.id==id){
+                return gameObject;
+            }
+        }
+        return null;
     }
     
 }
