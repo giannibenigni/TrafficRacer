@@ -25,9 +25,14 @@ public class CarSpawner {
     private static final int POSITION_6 = 620;
     private static final int POSITION_CENTER = 385;
 
-    private static final int SPAWN_Y = -100;
-
+    private static final int SPAWN_Y = -300;
+    
+    private static final double SPAWN_RATE = 240.0; //inserire nultipli di 40 (maggiore il numero meno frequente lo spawn)
+    
+    
+    
     private final Random ran;
+    
 
     Handler handler;
     Game game;
@@ -39,7 +44,7 @@ public class CarSpawner {
     }
 
     public synchronized void spawn(long tick) {
-        if (tick % ((int)((1.0 / ((double)(game.VelBase + game.VelAcceleration + 8) )) * 240.0)) == 0) {
+        if (tick % ((int)((1.0 / (game.VelBase + game.VelAcceleration + 8.0)) * SPAWN_RATE)) == 0) {
 
             for (int i = 0; i < 3 && !SpawnCar(); i++) { //provo per tre volte a spawnare una macchina finchè non ci riesco
             }
@@ -116,7 +121,7 @@ public class CarSpawner {
     }
 
     public boolean trySpawnCar(int vel, int position) {
-        if (!colide(new Rectangle(position + 10, SPAWN_Y, 45, 55))) {
+        if (!colide(new Rectangle(position + 10, SPAWN_Y, 45, 75))) {
             EnemyCar enemyCar = new EnemyCar(position, SPAWN_Y, ID.EnemyCar, handler, game);
             enemyCar.setVelY(vel);
             enemyCar.setImage((position < POSITION_CENTER ? 3 : 0) + ran.nextInt(3));
@@ -129,7 +134,7 @@ public class CarSpawner {
     }
 
     public boolean trySpawnTruck(int vel, int position) {
-        if (!colide(new Rectangle(position + 1, SPAWN_Y, 60, 310))) {
+        if (!colide(new Rectangle(position + 1, SPAWN_Y, 60, 330))) {
             EnemyTruck enemyTruck = new EnemyTruck(position, -400, ID.EnemyTruck, handler, game);
             enemyTruck.setVelY(vel);
             enemyTruck.setImage((position < POSITION_CENTER ? 1 : 0));

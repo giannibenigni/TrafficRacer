@@ -35,6 +35,10 @@ public class KeyInput extends KeyAdapter {
         if (key == KeyEvent.VK_ESCAPE) {
             //  game.running = false;
         }
+        
+        if (key == KeyEvent.VK_ENTER) {
+            game.playGame();
+        }
         if (!game.hud.isGameover()) {//da mettere se si sta giocando
             try {
                 //Destra D

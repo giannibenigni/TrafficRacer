@@ -36,6 +36,8 @@ public class Game extends Canvas implements Runnable {
 
     long tick = 0;
 
+    int gamePlay = -1;
+
     public Game() {
         ra = new Random();
         imageLoader = new ImagesLoader();
@@ -54,10 +56,8 @@ public class Game extends Canvas implements Runnable {
 
         //Entita del gioco
         handler.addObject(new BackGround(0, 0, ID.BackGround, handler, this));
-        //handler.addObject(new EnemyCar(0,0,ID.EnemyCar, handler));
 
-        handler.addObject(new PlayerCar((WIDTH / 2) - 32, HEIGHT - 180, ID.PlayerCar, handler, this));
-
+        // handler.addObject(new PlayerCar((WIDTH / 2) - 32, HEIGHT - 180, ID.PlayerCar, handler, this));
     }
 
     /**
@@ -87,44 +87,12 @@ public class Game extends Canvas implements Runnable {
         this.requestFocus();
 
         long lastTime = System.nanoTime();
-        double amountOfTicks = 200.0;
-//        double amountOfFrame = 60;
+        double amountOfTicks = 60;
         double ns = 1000000000 / amountOfTicks;
-//        double rns = 1000000000 / amountOfFrame;
         double delta = 0;
-//        double deltar = 0;
-//        long timer = System.currentTimeMillis();
-//        int frames = 0;
-
-//        while (running) {
-//            long now = System.nanoTime();
-//            delta += (now - lastTime) / ns;
-//            deltar += (now - lastTime) / rns;
-//            lastTime = now;
-//            while (delta >= 1) {
-//                tick();
-//                System.out.println("main.Game.run() TICK");
-//                delta--;
-//            }
-//
-//            while (running && deltar >= 1) {
-//                render();
-//                frames++;
-//                deltar--;
-//                System.out.println("main.Game.run() RENDER");
-//            }
-//
-//            System.out.println("main.Game.run() OUT");
-//
-//            if (System.currentTimeMillis() - timer > 5000) {
-//                timer += 5000;
-//                System.out.println("FPS: " + frames / 5);
-//                frames = 0;
-//            }
-//        }
         double delay;
         double avgMsCi = 0;
-
+        double avgMsTick = 0;
         while (running) {
             long now = System.nanoTime();
             delta = now - lastTime;
@@ -135,9 +103,11 @@ public class Game extends Canvas implements Runnable {
 
             //  System.out.println("ms/tick: " + ((double) (System.nanoTime() - lastTime) / 1000000) + "      ms/cicle: " + delta / 1000000);
             avgMsCi += delta / 1000000;
-            if (tick % 30 == 0) {
-                System.out.println("avg ms/cicle: " + avgMsCi / 30);
+            avgMsTick += ((double) (System.nanoTime() - lastTime) / 1000000);
+            if (tick % 60 == 0) {
+                System.out.println("avg ms/cicle: " + ((int) (avgMsCi / 6)) / 10.0 + " avg ms/tick: " + ((int) (avgMsTick / 6)) / 10.0);
                 avgMsCi = 0;
+                avgMsTick = 0;
             }
 
             delay = lastTime + ns - System.nanoTime();
@@ -161,15 +131,35 @@ public class Game extends Canvas implements Runnable {
 
     private void tick() {
         tick++;
-
-        if (tick % 500 == 0 && VelBase < 18) {
+        
+        
+        if (tick % 500 == 0 && VelBase < 18) { //da impedire che la velocità aumenti nel menù
             System.out.println("Vel+");
             VelBase++;
         }
-
+        
         keyInput.tick();
         handler.tick();
-        carSpawner.spawn(tick);
+
+        if (gamePlay > 0) {
+            if (gamePlay > 60) {
+                VelBase++;
+            } else {
+                if (gamePlay == 60) {
+                    handler.addObject(new PlayerCar((WIDTH / 2) + 20, HEIGHT, ID.PlayerCar, handler, this));
+                    handler.getAObject(ID.PlayerCar).setVelY(-17);
+                }
+                if (gamePlay >= 43) {
+                    handler.getAObject(ID.PlayerCar).setVelY(43 - gamePlay);
+                }
+                VelBase--;
+            }
+            gamePlay--;
+        } else {
+            carSpawner.spawn(tick);
+            
+        }
+
         hud.tick();
 
     }
@@ -244,6 +234,11 @@ public class Game extends Canvas implements Runnable {
 
     public Resize R() {
         return r;
+    }
+
+    public void playGame() {
+        gamePlay = 120;
+        hud.setRenderMenu(false);
     }
 
 }
