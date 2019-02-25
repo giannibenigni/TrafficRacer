@@ -8,7 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Connection extends Thread{
+
+
+
+public class Connection implements Runnable{
     
     private Socket client = null;
     private ObjectInputStream in = null;
@@ -24,7 +27,7 @@ public class Connection extends Thread{
         try {
             out = new ObjectOutputStream(client.getOutputStream());
             in = new ObjectInputStream(client.getInputStream());
-        } catch (Exception e) {
+        } catch (IOException e) {
             try {
                 client.close();
             } catch (IOException ex) {
@@ -32,7 +35,28 @@ public class Connection extends Thread{
             }
         }
         
-        this.start();
+        new Thread(this).start();
     }
+
+    @Override
+    public void run() {
+        while (true) {            
+            try {
+                Dati dati = (Dati) in.readObject();
+                
+                if(dati.getType()=="SINGLEPLAYER_MACH_RESULT"){
+                    System.out.println("SINGLEPLAYER_MACH_RESULT: point"+ dati.getPoint());
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+    
+    
     
 }

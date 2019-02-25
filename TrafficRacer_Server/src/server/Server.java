@@ -20,8 +20,7 @@ public class Server extends Thread{
         while(true){
             try {
                 Socket client = s.accept();
-                Socket client2 = s.accept();
-                Match match = new Match(new Connection(client), new Connection(client2));
+                Match match = new Match(new Connection(client));
             } catch (Exception e) {
             }
         }

@@ -17,41 +17,37 @@ public class KeyInput extends KeyAdapter {
     private int countAcc;
     private int countDec;
 
-    private GameObject playerCar;
-
     public KeyInput(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
-        this.playerCar = handler.getAObject(ID.PlayerCar);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (playerCar == null) {
-            playerCar = handler.getAObject(ID.PlayerCar);
-        }
 
         if (key == KeyEvent.VK_ESCAPE) {
             //  game.running = false;
         }
-        
+
         if (key == KeyEvent.VK_ENTER) {
-            game.playGame();
+            if (game.gameState == -1 || game.gameState == 0) {
+                game.playGame();
+            }
         }
-        if (!game.hud.isGameover()) {//da mettere se si sta giocando
+        if (game.gameState == 1) {//da mettere se si sta giocando
             try {
                 //Destra D
                 if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
                     dx = true;
-                    playerCar.setVelX(5);
+                    handler.playerCar.setVelX(5);
                     return;
                 }
 
                 //Sinistra A
                 if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
                     sx = true;
-                    playerCar.setVelX(-5);
+                    handler.playerCar.setVelX(-5);
                     return;
                 }
 
@@ -73,8 +69,8 @@ public class KeyInput extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if (playerCar == null) {
-            playerCar = handler.getAObject(ID.PlayerCar);
+        if (handler.playerCar == null) {
+            handler.playerCar = handler.getAObject(ID.PlayerCar);
         }
 
         try {
@@ -84,9 +80,9 @@ public class KeyInput extends KeyAdapter {
                 dx = false;
 
                 if (sx) {
-                    playerCar.setVelX(-5);
+                    handler.playerCar.setVelX(-5);
                 } else {
-                    playerCar.setVelX(0);
+                    handler.playerCar.setVelX(0);
                 }
                 return;
             }

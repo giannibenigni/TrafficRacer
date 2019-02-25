@@ -9,14 +9,13 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.GameEntities.BackGround;
+import network.network;
 
 public class Game extends Canvas implements Runnable {
-
     public static final int WIDTH = 800;
     public static final int HEIGHT = WIDTH / 8 * 9;
 
     private Thread thread;
-    public boolean running = false;
 
     private final Random ra;
     private final Handler handler;
@@ -24,23 +23,28 @@ public class Game extends Canvas implements Runnable {
     public final HUD hud;
     public final Resize r;
 
-    public int VelBase = 0;
-    public int VelAcceleration = 0;
-    private int point = 0;
+    public int VelBase;
+    public int VelAcceleration;
+    private int point;
+    public int gameState; // 0 : game started 1: game played -1 : game Over
 
-    private final CarSpawner carSpawner;
+    public final CarSpawner carSpawner;
     public final ImagesLoader imageLoader;
     private final KeyInput keyInput;
 
     public final RenderPage pageRender;
+    
+    public network net;
 
     long tick = 0;
 
-    int gamePlay = -1;
-
     public Game() {
+        inizzializzazione();
+        gameState = 0;
+        
         ra = new Random();
         imageLoader = new ImagesLoader();
+        
         r = new Resize(1000, WIDTH, HEIGHT);
         handler = new Handler();
 
@@ -48,16 +52,29 @@ public class Game extends Canvas implements Runnable {
 
         pageRender = new RenderPage(handler, this);
         keyInput = new KeyInput(handler, this);
+        
         this.addKeyListener(keyInput);
 
         hud = new HUD(handler, this);
 
         new Window(WIDTH, HEIGHT, "Gioco", this);
 
-        //Entita del gioco
         handler.addObject(new BackGround(0, 0, ID.BackGround, handler, this));
-
-        // handler.addObject(new PlayerCar((WIDTH / 2) - 32, HEIGHT - 180, ID.PlayerCar, handler, this));
+        
+        
+        net = new network();
+        net.startConnection();
+        
+        
+        
+    }
+    
+    
+    
+    private void inizzializzazione(){
+        VelBase = 0;
+        VelAcceleration = 0;
+        point = 0;
     }
 
     /**
@@ -68,15 +85,11 @@ public class Game extends Canvas implements Runnable {
 
         thread = new Thread(this);
         thread.start();
-        running = true;
 
     }
 
     public synchronized void stop() {
         try {
-            running = false;
-            renderPage(1);
-            thread.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,7 +106,7 @@ public class Game extends Canvas implements Runnable {
         double delay;
         double avgMsCi = 0;
         double avgMsTick = 0;
-        while (running) {
+        while (true) {
             long now = System.nanoTime();
             delta = now - lastTime;
             lastTime = now;
@@ -126,41 +139,23 @@ public class Game extends Canvas implements Runnable {
             }
         }
 
-        stop();
+
     }
 
     private void tick() {
         tick++;
-        
-        
+
         if (tick % 500 == 0 && VelBase < 18) { //da impedire che la velocità aumenti nel menù
             System.out.println("Vel+");
             VelBase++;
         }
-        
+
         keyInput.tick();
         handler.tick();
 
-        if (gamePlay > 0) {
-            if (gamePlay > 60) {
-                VelBase++;
-            } else {
-                if (gamePlay == 60) {
-                    handler.addObject(new PlayerCar((WIDTH / 2) + 20, HEIGHT, ID.PlayerCar, handler, this));
-                    handler.getAObject(ID.PlayerCar).setVelY(-17);
-                }
-                if (gamePlay >= 43) {
-                    handler.getAObject(ID.PlayerCar).setVelY(43 - gamePlay);
-                }
-                VelBase--;
-            }
-            gamePlay--;
-        } else {
-            carSpawner.spawn(tick);
-            
-        }
-
         hud.tick();
+
+        carSpawner.spawn(tick);
 
     }
 
@@ -237,8 +232,12 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void playGame() {
-        gamePlay = 120;
+        inizzializzazione();
+        gameState = 1;
+        handler.removeAllObjectWith(ID.PlayerCar);
+        handler.addObject(new PlayerCar((WIDTH / 2) + 20, HEIGHT, ID.PlayerCar, handler, this));
         hud.setRenderMenu(false);
+        carSpawner.enable(false);
     }
 
 }

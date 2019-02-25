@@ -16,24 +16,25 @@ import main.ID;
 
 public class PlayerCar extends GameObject {
 
-    private final Random r = new Random();
+    //private final Random r = new Random();
     private final Handler handler;
     private final Game game;
 
-    private URL url;
     private Image img;
+
+    int startAnimationStatus = 120;
 
     public PlayerCar(int x, int y, ID id, Handler handler, Game game) {
         super(x, y, id);
         this.handler = handler;
         this.game = game;
-
-        url = getClass().getResource("/Images/playerCar.png");
+        URL url = getClass().getResource("/Images/playerCar.png");
         try {
             img = ImageIO.read(url);
         } catch (IOException ex) {
             Logger.getLogger(PlayerCar.class.getName()).log(Level.SEVERE, null, ex);
         }
+        velY = 0;
     }
 
     @Override
@@ -42,11 +43,14 @@ public class PlayerCar extends GameObject {
         x += velX;
         y += velY;
 
-        if (!game.hud.isGameover()) {
+        if (game.gameState==1) {
             x = Game.clamp(x, 100, Game.WIDTH - 164);
-            //y = Game.clamp(y, 0, Game.HEIGHT - 60);
             game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelBase());
-            collision();
+            if (startAnimationStatus > 0) {
+                startAnimation();
+            } else {
+                collision();
+            }
         } else {
             if (y > Game.HEIGHT + 20) {
                 handler.removeObject(this);
@@ -75,14 +79,34 @@ public class PlayerCar extends GameObject {
                     System.out.println("Collisione!");
                     velY = gameObject.getVelY();
 
-                    game.hud.setGameover();
-
-                    //game.running = false;
-                    // game.stop();
+                    game.gameState = -1;
+                    
+                    
+                    game.net.sendMachResult(game.getPoint());
+                    
+                    
                 }
             }
         }
 
+    }
+
+    private void startAnimation() {
+        if (startAnimationStatus > 60) {
+            game.VelBase++;
+        } else {
+            if (startAnimationStatus == 60) {
+                setVelY(-17);
+            }
+            if (startAnimationStatus >= 43) {
+                setVelY(43 - startAnimationStatus);
+            }
+            game.VelBase--;
+            if(startAnimationStatus==1){
+                game.carSpawner.enable(true);
+            }
+        }
+        startAnimationStatus--;
     }
 
 }

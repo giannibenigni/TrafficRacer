@@ -26,39 +26,41 @@ public class CarSpawner {
     private static final int POSITION_CENTER = 385;
 
     private static final int SPAWN_Y = -300;
-    
-    private static final double SPAWN_RATE = 240.0; //inserire nultipli di 40 (maggiore il numero meno frequente lo spawn)
-    
-    
-    
-    private final Random ran;
-    
 
-    Handler handler;
-    Game game;
+    private static final double SPAWN_RATE = 240.0; //inserire nultipli di 40 (maggiore il numero meno frequente lo spawn)
+
+    private boolean enable;
+
+    private final Random ran;
+
+    private final Handler handler;
+    private final Game game;
 
     public CarSpawner(Handler handler, Game game) {
         this.handler = handler;
         this.game = game;
         ran = new Random();
+        enable = true;
     }
 
     public synchronized void spawn(long tick) {
-        if (tick % ((int)((1.0 / (game.VelBase + game.VelAcceleration + 8.0)) * SPAWN_RATE)) == 0) {
+        if (enable) {
+            if (tick % ((int) ((1.0 / (game.VelBase + game.VelAcceleration + 8.0)) * SPAWN_RATE)) == 0) {
 
-            for (int i = 0; i < 3 && !SpawnCar(); i++) { //provo per tre volte a spawnare una macchina finchè non ci riesco
+                for (int i = 0; i < 3 && !SpawnCar(); i++) { //provo per tre volte a spawnare una macchina finchè non ci riesco
+                }
+
+                for (int i = 0; i < 3 && !SpawnTruck(); i++) { //provo per tre volte a spawnare un camion finchè non ci riesco
+                }
             }
 
-            for (int i = 0; i < 3 && !SpawnTruck(); i++) { //provo per tre volte a spawnare un camion finchè non ci riesco
-            }
-        }
-
-        if (tick % ((int)((1.0 / ((double)(game.VelBase + game.VelAcceleration + 8) )) * 1200)) == 0) {
+            if (tick % ((int) ((1.0 / ((double) (game.VelBase + game.VelAcceleration + 8))) * 1200)) == 0) {
                 Obstacles obstacle = new Obstacles(POSITION_CENTER, SPAWN_Y, ID.EnemyCar, handler, game);
                 obstacle.setVelY(8);
                 obstacle.setImage(0);
 
                 handler.addObject(obstacle);
+            }
         }
     }
 
@@ -155,5 +157,9 @@ public class CarSpawner {
             }
         }
         return false;
+    }
+
+    public void enable(boolean enable) {
+        this.enable = enable;
     }
 }
