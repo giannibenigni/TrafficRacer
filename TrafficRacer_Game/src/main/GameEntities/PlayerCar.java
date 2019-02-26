@@ -43,13 +43,15 @@ public class PlayerCar extends GameObject {
         x += velX;
         y += velY;
 
-        if (game.gameState==1) {
+        if (game.gameState == 1) {
             x = Game.clamp(x, 100, Game.WIDTH - 164);
-            game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelBase());
+
             if (startAnimationStatus > 0) {
                 startAnimation();
+
             } else {
                 collision();
+                game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelBase());
             }
         } else {
             if (y > Game.HEIGHT + 20) {
@@ -80,11 +82,9 @@ public class PlayerCar extends GameObject {
                     velY = gameObject.getVelY();
 
                     game.gameState = -1;
-                    
-                    
+
                     game.net.sendMachResult(game.getPoint());
-                    
-                    
+
                 }
             }
         }
@@ -102,7 +102,7 @@ public class PlayerCar extends GameObject {
                 setVelY(43 - startAnimationStatus);
             }
             game.VelBase--;
-            if(startAnimationStatus==1){
+            if (startAnimationStatus == 1) {
                 game.carSpawner.enable(true);
             }
         }

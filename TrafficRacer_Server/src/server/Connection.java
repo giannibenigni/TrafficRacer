@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import network.Dati;
 
 
 
@@ -43,8 +44,8 @@ public class Connection implements Runnable{
         while (true) {            
             try {
                 Dati dati = (Dati) in.readObject();
-                
-                if(dati.getType()=="SINGLEPLAYER_MACH_RESULT"){
+                System.out.println("Dati : "+ dati.getType());
+                if(dati.getType().equals("SINGLEPLAYER_MACH_RESULT")){
                     System.out.println("SINGLEPLAYER_MACH_RESULT: point"+ dati.getPoint());
                 }
                 
