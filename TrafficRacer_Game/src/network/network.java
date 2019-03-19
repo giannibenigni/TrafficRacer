@@ -21,30 +21,56 @@ public class network {
     private ObjectInputStream in = null;
     private ObjectOutputStream out = null;
     private Socket socket = null;
+    private boolean conectionStatus;
 
     public void startConnection() {
         try {
 
-            socket = new Socket("localhost", 6969);
+             socket = new Socket("10.0.74.26", 6969);
+            //socket = new Socket("localhost", 6969);
             System.out.println("Connesso");
 
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
             System.out.println("reading");
+            conectionStatus = true;
 
         } catch (Exception e) {
-            System.out.println("di po");
+            System.out.println("non conneso");
+            conectionStatus = false;
         }
 
     }
-    
-    public void sendMachResult(int point){
-        try {
-            out.writeObject(new Dati("SINGLEPLAYER_MACH_RESULT", point));
-        } catch (Exception ex) {
-            Logger.getLogger(network.class.getName()).log(Level.SEVERE, null, ex);
+
+    public void sendMachResult(int point) {
+        if (conectionStatus) {
+            try {
+                out.writeObject(new Dati("SINGLEPLAYER_MACH_RESULT", point));
+            } catch (Exception ex) {
+                Logger.getLogger(network.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    
+
+    }
+
+    public void closeConnection() {
+        if (conectionStatus) {
+            try {
+                in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(network.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(network.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(network.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

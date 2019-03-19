@@ -50,8 +50,8 @@ public class PlayerCar extends GameObject {
                 startAnimation();
 
             } else {
-                collision();
                 game.addPoint(((x > (Game.WIDTH / 2)) ? 1 : 2) + game.getVelBase());
+                collision();
             }
         } else {
             if (y > Game.HEIGHT + 20) {

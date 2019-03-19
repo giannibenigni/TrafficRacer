@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/LS_Fisso/Desktop/TrafficRacer-master/TrafficRacer_Game/src/network/network.java</file>
-            <file>file:/C:/Users/LS_Fisso/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/RenderPage.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/GameEntities/BackGround.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/KeyInput.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/Game.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/HUD.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/network/network.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/Window.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/RenderPage.java</file>
+            <file>file:/C:/Users/luca.salvadori/Desktop/TrafficRacer-master/TrafficRacer_Game/src/main/GameEntities/PlayerCar.java</file>
         </group>
     </open-files>
 </project-private>
