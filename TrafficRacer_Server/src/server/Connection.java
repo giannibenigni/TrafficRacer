@@ -49,11 +49,9 @@ public class Connection implements Runnable{
                     System.out.println("SINGLEPLAYER_MACH_RESULT: point"+ dati.getPoint());
                 }
                 
-            } catch (IOException ex) {
-                Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (Exception ex) {
+                
+            } 
         }
         
     }
